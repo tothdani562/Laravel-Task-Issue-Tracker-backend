@@ -1,0 +1,7 @@
+parameters:
+    paths:
+        - app
+        - routes/api.php
+        - routes/web.php
+    level: 6
+    reportUnmatchedIgnoredErrors: false
