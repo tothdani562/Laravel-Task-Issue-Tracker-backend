@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProjectController;
 use App\Support\ApiResponse;
 use Illuminate\Support\Facades\Route;
 
@@ -20,15 +21,15 @@ Route::prefix('auth')->group(function (): void {
     });
 });
 
-Route::prefix('projects')->group(function (): void {
-    Route::post('/', fn () => ApiResponse::notImplemented('Project creation is not implemented yet.'));
-    Route::get('/', fn () => ApiResponse::notImplemented('Project listing is not implemented yet.'));
-    Route::get('/{id}', fn () => ApiResponse::notImplemented('Project details are not implemented yet.'));
-    Route::patch('/{id}', fn () => ApiResponse::notImplemented('Project update is not implemented yet.'));
-    Route::delete('/{id}', fn () => ApiResponse::notImplemented('Project deletion is not implemented yet.'));
+Route::middleware('auth:api')->prefix('projects')->group(function (): void {
+    Route::post('/', [ProjectController::class, 'store']);
+    Route::get('/', [ProjectController::class, 'index']);
+    Route::get('/{project}', [ProjectController::class, 'show']);
+    Route::patch('/{project}', [ProjectController::class, 'update']);
+    Route::delete('/{project}', [ProjectController::class, 'destroy']);
 
-    Route::post('/{id}/members', fn () => ApiResponse::notImplemented('Project member add is not implemented yet.'));
-    Route::delete('/{id}/members/{memberUserId}', fn () => ApiResponse::notImplemented('Project member removal is not implemented yet.'));
+    Route::post('/{project}/members', [ProjectController::class, 'addMember']);
+    Route::delete('/{project}/members/{memberUserId}', [ProjectController::class, 'removeMember']);
 
     Route::post('/{projectId}/tasks', fn () => ApiResponse::notImplemented('Task creation is not implemented yet.'));
     Route::get('/{projectId}/tasks', fn () => ApiResponse::notImplemented('Task listing is not implemented yet.'));
@@ -37,7 +38,7 @@ Route::prefix('projects')->group(function (): void {
     Route::delete('/{projectId}/tasks/{taskId}', fn () => ApiResponse::notImplemented('Task deletion is not implemented yet.'));
 });
 
-Route::prefix('tasks/{taskId}/comments')->group(function (): void {
+Route::middleware('auth:api')->prefix('tasks/{taskId}/comments')->group(function (): void {
     Route::post('/', fn () => ApiResponse::notImplemented('Comment creation is not implemented yet.'));
     Route::get('/', fn () => ApiResponse::notImplemented('Comment listing is not implemented yet.'));
     Route::get('/{commentId}', fn () => ApiResponse::notImplemented('Comment details are not implemented yet.'));

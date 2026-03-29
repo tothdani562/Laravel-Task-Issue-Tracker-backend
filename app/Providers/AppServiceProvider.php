@@ -3,10 +3,13 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Models\Project;
+use App\Policies\ProjectPolicy;
 use App\Services\JwtService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::policy(Project::class, ProjectPolicy::class);
+
         if (filter_var(env('APP_RUNNING_IN_DOCKER', false), FILTER_VALIDATE_BOOL)) {
             Config::set('database.default', 'pgsql');
             Config::set('database.connections.pgsql.host', env('DB_HOST', 'postgres'));
