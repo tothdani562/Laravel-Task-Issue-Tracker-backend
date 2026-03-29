@@ -1,0 +1,71 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: laravel-eloquent-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: laravel-eloquent
+      POSTGRES_USER: laravel
+      POSTGRES_PASSWORD: laravel
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U laravel -d \"laravel-eloquent\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/php-cli/Dockerfile
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    environment:
+      APP_ENV: local
+      APP_DEBUG: true
+      APP_RUNNING_IN_DOCKER: true
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: laravel-eloquent
+      DB_USERNAME: laravel
+      DB_PASSWORD: laravel
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command:
+      [
+        "sh",
+        "-c",
+        "php artisan config:clear && php -S 0.0.0.0:8000 -t public"
+      ]
+    ports:
+      - "8001:8000"
+
+  artisan:
+    build:
+      context: .
+      dockerfile: docker/php-cli/Dockerfile
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    environment:
+      APP_ENV: local
+      APP_RUNNING_IN_DOCKER: true
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: laravel-eloquent
+      DB_USERNAME: laravel
+      DB_PASSWORD: laravel
+    depends_on:
+      postgres:
+        condition: service_healthy
+    entrypoint: ["php"]
+
+volumes:
+  postgres_data:
