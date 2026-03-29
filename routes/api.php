@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
 use App\Support\ApiResponse;
 use Illuminate\Support\Facades\Route;
 
@@ -31,11 +32,11 @@ Route::middleware('auth:api')->prefix('projects')->group(function (): void {
     Route::post('/{project}/members', [ProjectController::class, 'addMember']);
     Route::delete('/{project}/members/{memberUserId}', [ProjectController::class, 'removeMember']);
 
-    Route::post('/{projectId}/tasks', fn () => ApiResponse::notImplemented('Task creation is not implemented yet.'));
-    Route::get('/{projectId}/tasks', fn () => ApiResponse::notImplemented('Task listing is not implemented yet.'));
-    Route::get('/{projectId}/tasks/{taskId}', fn () => ApiResponse::notImplemented('Task details are not implemented yet.'));
-    Route::patch('/{projectId}/tasks/{taskId}', fn () => ApiResponse::notImplemented('Task update is not implemented yet.'));
-    Route::delete('/{projectId}/tasks/{taskId}', fn () => ApiResponse::notImplemented('Task deletion is not implemented yet.'));
+    Route::post('/{projectId}/tasks', [TaskController::class, 'store']);
+    Route::get('/{projectId}/tasks', [TaskController::class, 'index']);
+    Route::get('/{projectId}/tasks/{taskId}', [TaskController::class, 'show']);
+    Route::patch('/{projectId}/tasks/{taskId}', [TaskController::class, 'update']);
+    Route::delete('/{projectId}/tasks/{taskId}', [TaskController::class, 'destroy']);
 });
 
 Route::middleware('auth:api')->prefix('tasks/{taskId}/comments')->group(function (): void {
