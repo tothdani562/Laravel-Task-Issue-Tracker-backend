@@ -12,11 +12,11 @@ Route::get('/', fn () => ApiResponse::success([
 Route::prefix('auth')->group(function (): void {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
 
     Route::middleware('auth:api')->group(function (): void {
-        Route::post('/refresh', fn () => ApiResponse::notImplemented('Token refresh is not implemented yet.'));
-        Route::post('/logout', fn () => ApiResponse::notImplemented('Logout is not implemented yet.'));
-        Route::get('/me', fn () => ApiResponse::notImplemented('Current user endpoint is not implemented yet.'));
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::get('/me', [AuthController::class, 'me']);
     });
 });
 

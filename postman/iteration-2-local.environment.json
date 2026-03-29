@@ -1,16 +1,16 @@
 {
-  "id": "f4a854f9-df49-46e7-b55d-12ef69d4156e",
-  "name": "Laravel Eloquent Iteration 1 Docker",
+  "id": "2db37075-0d77-4f0f-92d2-d97e67f2ea56",
+  "name": "Laravel Eloquent Iteration 2 Local",
   "values": [
     {
       "key": "baseUrl",
-      "value": "http://127.0.0.1:8001",
+      "value": "http://127.0.0.1:8000",
       "type": "default",
       "enabled": true
     },
     {
       "key": "registerName",
-      "value": "Iteration One User",
+      "value": "Iteration Two User",
       "type": "default",
       "enabled": true
     },
@@ -39,6 +39,18 @@
       "enabled": true
     },
     {
+      "key": "refreshToken",
+      "value": "",
+      "type": "secret",
+      "enabled": true
+    },
+    {
+      "key": "previousRefreshToken",
+      "value": "",
+      "type": "secret",
+      "enabled": true
+    },
+    {
       "key": "userId",
       "value": "",
       "type": "default",
@@ -46,6 +58,6 @@
     }
   ],
   "_postman_variable_scope": "environment",
-  "_postman_exported_at": "2026-03-29T12:45:00.000Z",
+  "_postman_exported_at": "2026-03-29T14:00:00.000Z",
   "_postman_exported_using": "GitHub Copilot GPT-5.3-Codex"
 }
