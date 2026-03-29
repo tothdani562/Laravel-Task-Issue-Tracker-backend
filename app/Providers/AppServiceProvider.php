@@ -42,7 +42,7 @@ class AppServiceProvider extends ServiceProvider
 
             /** @var JwtService $jwtService */
             $jwtService = app(JwtService::class);
-            $payload = $jwtService->decode($token);
+            $payload = $jwtService->decodeAccessToken($token);
 
             if ($payload === null || ! isset($payload['sub']) || ! is_string($payload['sub'])) {
                 return null;

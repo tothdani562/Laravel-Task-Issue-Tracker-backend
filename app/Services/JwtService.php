@@ -16,6 +16,25 @@ class JwtService
             'sub' => (string) $user->getKey(),
             'iat' => $issuedAt,
             'exp' => $expiresAt,
+            'jti' => bin2hex(random_bytes(16)),
+            'token_use' => 'access',
+        ];
+
+        return $this->encode($payload);
+    }
+
+    public function generateRefreshToken(User $user): string
+    {
+        $issuedAt = time();
+        $expiresAt = $issuedAt + $this->refreshTtl();
+
+        $payload = [
+            'iss' => $this->issuer(),
+            'sub' => (string) $user->getKey(),
+            'iat' => $issuedAt,
+            'exp' => $expiresAt,
+            'jti' => bin2hex(random_bytes(16)),
+            'token_use' => 'refresh',
         ];
 
         return $this->encode($payload);
@@ -52,6 +71,10 @@ class JwtService
             return null;
         }
 
+        if (! isset($payload['iss']) || ! is_string($payload['iss']) || $payload['iss'] !== $this->issuer()) {
+            return null;
+        }
+
         if (! isset($payload['exp']) || ! is_int($payload['exp']) || $payload['exp'] < time()) {
             return null;
         }
@@ -62,6 +85,45 @@ class JwtService
     public function ttl(): int
     {
         return max(60, (int) config('jwt.ttl', 900));
+    }
+
+    public function refreshTtl(): int
+    {
+        return max(300, (int) config('jwt.refresh_ttl', 1_209_600));
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function decodeAccessToken(string $token): ?array
+    {
+        $payload = $this->decode($token);
+
+        if ($payload === null) {
+            return null;
+        }
+
+        $tokenUse = $payload['token_use'] ?? null;
+
+        if ($tokenUse !== null && $tokenUse !== 'access') {
+            return null;
+        }
+
+        return $payload;
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function decodeRefreshToken(string $token): ?array
+    {
+        $payload = $this->decode($token);
+
+        if ($payload === null) {
+            return null;
+        }
+
+        return ($payload['token_use'] ?? null) === 'refresh' ? $payload : null;
     }
 
     private function issuer(): string
