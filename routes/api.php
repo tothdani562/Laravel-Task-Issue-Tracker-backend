@@ -1,14 +1,23 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Support\ApiResponse;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', fn () => ApiResponse::success([
+    'service' => 'task-manager-api',
+    'status' => 'ok',
+]));
+
 Route::prefix('auth')->group(function (): void {
-    Route::post('/register', fn () => ApiResponse::notImplemented('Registration is not implemented yet.'));
-    Route::post('/login', fn () => ApiResponse::notImplemented('Login is not implemented yet.'));
-    Route::post('/refresh', fn () => ApiResponse::notImplemented('Token refresh is not implemented yet.'));
-    Route::post('/logout', fn () => ApiResponse::notImplemented('Logout is not implemented yet.'));
-    Route::get('/me', fn () => ApiResponse::notImplemented('Current user endpoint is not implemented yet.'));
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+
+    Route::middleware('auth:api')->group(function (): void {
+        Route::post('/refresh', fn () => ApiResponse::notImplemented('Token refresh is not implemented yet.'));
+        Route::post('/logout', fn () => ApiResponse::notImplemented('Logout is not implemented yet.'));
+        Route::get('/me', fn () => ApiResponse::notImplemented('Current user endpoint is not implemented yet.'));
+    });
 });
 
 Route::prefix('projects')->group(function (): void {

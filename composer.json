@@ -54,6 +54,9 @@
         "analyse": [
             "./vendor/bin/phpstan analyse --memory-limit=1G"
         ],
+        "migrate:docker": [
+            "docker compose run --rm artisan artisan migrate --force"
+        ],
         "quality": [
             "@composer lint",
             "@composer analyse",
