@@ -55,11 +55,18 @@ class TaskController extends Controller
         $validated = $request->validated();
         $page = isset($validated['page']) ? (int) $validated['page'] : 1;
         $limit = isset($validated['limit']) ? (int) $validated['limit'] : 15;
+        $sortColumnMap = [
+            'createdAt' => 'created_at',
+            'dueDate' => 'due_date',
+            'priority' => 'priority',
+            'status' => 'status',
+        ];
+        $sortColumn = $sortColumnMap[$validated['sortBy'] ?? 'createdAt'];
+        $sortOrder = $validated['sortOrder'] ?? 'desc';
 
         $query = Task::query()
             ->where('project_id', $project->id)
-            ->with('assignee')
-            ->orderByDesc('created_at');
+            ->with('assignee');
 
         if (isset($validated['status'])) {
             $query->where('status', $validated['status']);
@@ -72,6 +79,24 @@ class TaskController extends Controller
         if (isset($validated['assigneeId'])) {
             $query->where('assigned_user_id', (int) $validated['assigneeId']);
         }
+
+        if (isset($validated['dueFrom'])) {
+            $query->where('due_date', '>=', $validated['dueFrom']);
+        }
+
+        if (isset($validated['dueTo'])) {
+            $query->where('due_date', '<=', $validated['dueTo']);
+        }
+
+        if (($validated['sortBy'] ?? null) === 'priority') {
+            $query->orderByRaw(
+                "CASE priority WHEN 'LOW' THEN 1 WHEN 'MEDIUM' THEN 2 WHEN 'HIGH' THEN 3 ELSE 4 END {$sortOrder}"
+            );
+        } else {
+            $query->orderBy($sortColumn, $sortOrder);
+        }
+
+        $query->orderBy('id', 'asc');
 
         $tasks = $query->paginate($limit, ['*'], 'page', $page);
 
