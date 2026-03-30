@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use RuntimeException;
 
 class JwtService
 {
@@ -164,8 +165,12 @@ class JwtService
             $decoded = base64_decode(substr($secret, 7), true);
 
             if ($decoded !== false) {
-                return $decoded;
+                $secret = $decoded;
             }
+        }
+
+        if ($secret === '') {
+            throw new RuntimeException('JWT secret is not configured. Set JWT_SECRET in environment.');
         }
 
         return $secret;
