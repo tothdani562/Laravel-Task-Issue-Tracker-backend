@@ -29,6 +29,16 @@
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
+        <env name="JWT_SECRET" value="testing-secret-value"/>
+        <env name="JWT_TTL" value="900"/>
+        <env name="JWT_REFRESH_TTL" value="1209600"/>
+        <env name="AUTH_REGISTER_RATE_LIMIT" value="5"/>
+        <env name="AUTH_LOGIN_RATE_LIMIT" value="10"/>
+        <env name="AUTH_REFRESH_RATE_LIMIT" value="20"/>
+        <env name="AUTH_PROTECTED_RATE_LIMIT" value="60"/>
+        <env name="CORS_ALLOWED_ORIGINS" value="http://localhost:3000,http://127.0.0.1:3000"/>
+        <env name="CORS_MAX_AGE" value="3600"/>
+        <env name="CORS_SUPPORTS_CREDENTIALS" value="false"/>
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>

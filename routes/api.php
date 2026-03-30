@@ -13,11 +13,11 @@ Route::get('/', fn () => ApiResponse::success([
 ]));
 
 Route::prefix('auth')->group(function (): void {
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:auth-register');
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:auth-login');
+    Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('throttle:auth-refresh');
 
-    Route::middleware('auth:api')->group(function (): void {
+    Route::middleware(['auth:api', 'throttle:auth-protected'])->group(function (): void {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('/me', [AuthController::class, 'me']);
     });

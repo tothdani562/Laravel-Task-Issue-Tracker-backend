@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,6 +30,30 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::policy(Project::class, ProjectPolicy::class);
+
+        RateLimiter::for('auth-register', function (Request $request): Limit {
+            return Limit::perMinute((int) config('auth.rate_limits.register_max_attempts', 5))
+                ->by($request->ip());
+        });
+
+        RateLimiter::for('auth-login', function (Request $request): Limit {
+            $email = strtolower((string) $request->input('email', ''));
+
+            return Limit::perMinute((int) config('auth.rate_limits.login_max_attempts', 10))
+                ->by($request->ip().'|'.$email);
+        });
+
+        RateLimiter::for('auth-refresh', function (Request $request): Limit {
+            return Limit::perMinute((int) config('auth.rate_limits.refresh_max_attempts', 20))
+                ->by($request->ip());
+        });
+
+        RateLimiter::for('auth-protected', function (Request $request): Limit {
+            $userPart = (string) optional($request->user())->getAuthIdentifier();
+
+            return Limit::perMinute((int) config('auth.rate_limits.protected_max_attempts', 60))
+                ->by($request->ip().'|'.$userPart);
+        });
 
         if (filter_var(env('APP_RUNNING_IN_DOCKER', false), FILTER_VALIDATE_BOOL)) {
             Config::set('database.default', 'pgsql');

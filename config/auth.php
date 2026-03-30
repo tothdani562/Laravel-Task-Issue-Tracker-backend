@@ -119,4 +119,11 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    'rate_limits' => [
+        'register_max_attempts' => (int) env('AUTH_REGISTER_RATE_LIMIT', 5),
+        'login_max_attempts' => (int) env('AUTH_LOGIN_RATE_LIMIT', 10),
+        'refresh_max_attempts' => (int) env('AUTH_REFRESH_RATE_LIMIT', 20),
+        'protected_max_attempts' => (int) env('AUTH_PROTECTED_RATE_LIMIT', 60),
+    ],
+
 ];
