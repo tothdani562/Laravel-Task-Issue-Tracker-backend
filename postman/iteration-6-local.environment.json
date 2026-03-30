@@ -1,0 +1,147 @@
+{
+  "id": "f4d01ec9-983d-4fc2-ba3d-cd31e5e7d0c0",
+  "name": "Laravel Eloquent Iteration 6 Local",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8000",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "registerPassword",
+      "value": "Password123",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "ownerName",
+      "value": "Iteration Six Owner",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "memberName",
+      "value": "Iteration Six Member",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "strangerName",
+      "value": "Iteration Six Stranger",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "ownerEmail",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "memberEmail",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "strangerEmail",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "ownerAccessToken",
+      "value": "",
+      "type": "secret",
+      "enabled": true
+    },
+    {
+      "key": "memberAccessToken",
+      "value": "",
+      "type": "secret",
+      "enabled": true
+    },
+    {
+      "key": "strangerAccessToken",
+      "value": "",
+      "type": "secret",
+      "enabled": true
+    },
+    {
+      "key": "ownerUserId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "memberUserId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "strangerUserId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "projectId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "projectName",
+      "value": "Iteration 6 Project",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "projectDescription",
+      "value": "Iteration 6 Project Description",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "taskId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "taskTitle",
+      "value": "Iteration 6 Task",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "commentId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "commentContentA",
+      "value": "Iteration 6 comment A",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "commentContentB",
+      "value": "Iteration 6 comment B",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "commentContentUpdated",
+      "value": "Iteration 6 comment updated",
+      "type": "default",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2026-03-30T16:45:00.000Z",
+  "_postman_exported_using": "GitHub Copilot GPT-5.3-Codex"
+}

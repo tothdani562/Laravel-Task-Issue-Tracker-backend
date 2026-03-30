@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Support\ApiResponse;
@@ -40,9 +41,9 @@ Route::middleware('auth:api')->prefix('projects')->group(function (): void {
 });
 
 Route::middleware('auth:api')->prefix('tasks/{taskId}/comments')->group(function (): void {
-    Route::post('/', fn () => ApiResponse::notImplemented('Comment creation is not implemented yet.'));
-    Route::get('/', fn () => ApiResponse::notImplemented('Comment listing is not implemented yet.'));
-    Route::get('/{commentId}', fn () => ApiResponse::notImplemented('Comment details are not implemented yet.'));
-    Route::patch('/{commentId}', fn () => ApiResponse::notImplemented('Comment update is not implemented yet.'));
-    Route::delete('/{commentId}', fn () => ApiResponse::notImplemented('Comment deletion is not implemented yet.'));
+    Route::post('/', [CommentController::class, 'store']);
+    Route::get('/', [CommentController::class, 'index']);
+    Route::get('/{commentId}', [CommentController::class, 'show']);
+    Route::patch('/{commentId}', [CommentController::class, 'update']);
+    Route::delete('/{commentId}', [CommentController::class, 'destroy']);
 });
